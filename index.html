@@ -440,7 +440,10 @@
         <a class="nav-item" href="#top">How This Cookbook Works</a>
 
         <div class="nav-section-title">Prerequisites</div>
-        <a class="nav-item" href="#prereq">Install Python 3.10 &amp; Libraries</a>
+        <a class="nav-item" href="#prereq">Install Tools &amp; Libraries</a>
+        <a class="nav-item sub" href="#pre-vscode">Install VS Code</a>
+        <a class="nav-item sub" href="#pre-open">Open Folder with <code>code .</code></a>
+        <a class="nav-item sub" href="#pre-ext">VS Code Extensions</a>
         <a class="nav-item sub" href="#pre-install">Install Python 3.10</a>
         <a class="nav-item sub" href="#pre-314">Already on 3.14? Add 3.10</a>
         <a class="nav-item sub" href="#pre-pip">pymavlink &amp; pygame</a>
@@ -499,7 +502,7 @@
             <table>
                 <thead><tr><th>Step</th><th>You will be able to...</th><th>Main file / tool</th></tr></thead>
                 <tbody>
-                    <tr><td>Prereq</td><td>Install Python 3.10, select it as your interpreter, install <code>pymavlink</code> and <code>pygame</code></td><td>Python &middot; pip</td></tr>
+                    <tr><td>Prereq</td><td>Install VS Code, open the project with <code>code .</code>, add the Python extension, install Python 3.10, select it as your interpreter, install <code>pymavlink</code> and <code>pygame</code></td><td>VS Code &middot; Python &middot; pip</td></tr>
                     <tr><td>1</td><td>Find your way around Mission Planner and start the Multirotor SITL</td><td>Mission Planner &mdash; Simulation tab</td></tr>
                     <tr><td>2</td><td>Hand-plan a waypoint mission, fly it in AUTO and watch it auto-disarm</td><td>Mission Planner &mdash; Plan &amp; Data tabs</td></tr>
                     <tr><td>3</td><td>Connect from Python and confirm a live MAVLink heartbeat</td><td><code>heartbeat.py</code></td></tr>
@@ -523,23 +526,112 @@
 
         <hr>
 
-        <h1 id="prereq" class="reveal">Prerequisites — Python 3.10 &amp; Libraries</h1>
-        <p class="reveal">Do this once, before the workshop starts. The Python scripts in Phases 3-7 need <strong>Python 3.10</strong> plus two libraries. Follow the steps in order and install each library on its own so you can see exactly which one fails.</p>
+        <h1 id="prereq" class="reveal">Prerequisites — VS Code, Python 3.10 &amp; Libraries</h1>
+        <p class="reveal">Do this once, before the workshop starts. We do <strong>everything inside VS Code</strong> &mdash; editor, extensions, terminal and installs &mdash; so you never juggle separate windows. The only thing you type in a normal terminal is one command, <code>code .</code>, to open VS Code on your project folder.</p>
+
+        <div class="table-wrap reveal">
+            <table>
+                <thead><tr><th>#</th><th>What</th><th>Where to get it</th><th>Where you install it</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>Visual Studio Code</td><td><a href="https://code.visualstudio.com/download" target="_blank" rel="noopener">code.visualstudio.com/download</a></td><td>Run the installer (Windows / macOS / Linux)</td></tr>
+                    <tr><td>2</td><td>Python extension (+ Pylance)</td><td>VS Code Marketplace</td><td>VS Code &rarr; Extensions panel</td></tr>
+                    <tr><td>3</td><td>Python 3.10</td><td><a href="https://www.python.org/downloads/release/python-31011/" target="_blank" rel="noopener">python.org &rarr; 3.10.11</a></td><td>Installer, then verify in the VS Code terminal</td></tr>
+                    <tr><td>4</td><td><code>pymavlink</code> &amp; <code>pygame</code></td><td>PyPI via pip</td><td>VS Code integrated terminal (<code>Ctrl+`</code>)</td></tr>
+                    <tr><td>5</td><td>Mission Planner</td><td><a href="https://ardupilot.org/planner/docs/mission-planner-installation.html" target="_blank" rel="noopener">ardupilot.org</a></td><td>Windows installer (<code>.msi</code>)</td></tr>
+                </tbody>
+            </table>
+        </div>
 
         <div class="callout callout-note reveal">
             <strong>Mission Planner is Windows software</strong>
-            Download and install it from <a href="https://ardupilot.org/planner/docs/mission-planner-installation.html" target="_blank" rel="noopener">ardupilot.org/planner/docs/mission-planner-installation.html</a> (the installer <code>MissionPlanner-latest.msi</code>). The commands below are shown for Windows first, with macOS / Linux alternatives.
+            Download and install it from <a href="https://ardupilot.org/planner/docs/mission-planner-installation.html" target="_blank" rel="noopener">ardupilot.org/planner/docs/mission-planner-installation.html</a> (the installer <code>MissionPlanner-latest.msi</code>). Commands below are shown for Windows first, with macOS / Linux alternatives.
+        </div>
+
+        <h2 id="pre-vscode" class="reveal">Step 0 — Install Visual Studio Code</h2>
+        <div class="exercise-card reveal">
+            <ul>
+                <li>Download VS Code from <a href="https://code.visualstudio.com/download" target="_blank" rel="noopener">code.visualstudio.com/download</a> (pick <strong>Windows &mdash; User Installer, 64-bit</strong>).</li>
+                <li>Run the installer. On the <strong>Select Additional Tasks</strong> page, tick all of these:
+                    <ul>
+                        <li><strong>Add &ldquo;Open with Code&rdquo; action to Windows Explorer file context menu</strong></li>
+                        <li><strong>Add &ldquo;Open with Code&rdquo; action to Windows Explorer directory context menu</strong></li>
+                        <li><strong>Add to PATH (requires shell restart)</strong> &mdash; this is what makes the <code>code .</code> command work. It is ticked by default; do not untick it.</li>
+                    </ul>
+                </li>
+                <li>Click <strong>Install</strong>, then <strong>Finish</strong>.</li>
+                <li>Prefer one command? In PowerShell: <code>winget install -e --id Microsoft.VisualStudioCode</code></li>
+            </ul>
+        </div>
+
+        <h2 id="pre-open" class="reveal">Open Your Project Folder with <code>code .</code></h2>
+        <p class="reveal">First create a folder for the workshop, then open it in VS Code. This is the one thing you do in a normal terminal. Open the terminal, move into the project folder, and type <code>code .</code> &mdash; the dot means &ldquo;this folder&rdquo;. VS Code opens with the whole folder loaded.</p>
+
+        <div class="exercise-card reveal">
+            <h3>Windows</h3>
+            <ul>
+                <li>Press <code>Win</code>, type <strong>PowerShell</strong> (or <strong>cmd</strong>) and press Enter.</li>
+                <li>Create the project folder, go into it, then open it in VS Code:</li>
+            </ul>
+        </div>
+        <pre class="reveal has-lang"><span class="pre-lang">powershell</span><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>cd $HOME\Desktop
+mkdir agri-drone-workshop
+cd agri-drone-workshop
+code .</code></pre>
+
+        <div class="exercise-card reveal">
+            <h3>No terminal? Two other ways on Windows</h3>
+            <ul>
+                <li><strong>File Explorer:</strong> right-click the Desktop &rarr; <strong>New &rarr; Folder</strong> and name it <code>agri-drone-workshop</code>. Open it, click the address bar, type <code>cmd</code> and press Enter &mdash; a terminal opens already inside that folder. Then type <code>code .</code></li>
+                <li><strong>Right-click:</strong> right-click the folder &rarr; <strong>Open with Code</strong> (Windows 11: <em>Show more options</em> first).</li>
+            </ul>
+        </div>
+
+        <div class="exercise-card reveal">
+            <h3>macOS / Linux</h3>
+        </div>
+        <pre class="reveal has-lang"><span class="pre-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>cd ~/Desktop
+mkdir agri-drone-workshop
+cd agri-drone-workshop
+code .</code></pre>
+
+        <div class="callout callout-danger reveal">
+            <strong><code>code</code> is not recognized as a command?</strong>
+            <ul>
+                <li><strong>Windows:</strong> you did not tick <em>Add to PATH</em>, or the terminal was open during the install. Close the terminal and open a new one. If it still fails, re-run the VS Code installer and tick <em>Add to PATH</em>.</li>
+                <li><strong>macOS:</strong> open VS Code, press <code>Cmd+Shift+P</code>, run <strong>Shell Command: Install &lsquo;code&rsquo; command in PATH</strong>, then open a new terminal.</li>
+                <li><strong>Linux:</strong> install VS Code from the <code>.deb</code> / <code>.rpm</code> or snap package &mdash; the <code>code</code> command is added automatically.</li>
+            </ul>
+        </div>
+
+        <div class="callout callout-tip reveal">
+            <strong>From here on, stay inside VS Code</strong>
+            Open its built-in terminal with <code>Ctrl+`</code> (or menu <strong>Terminal &rarr; New Terminal</strong>). It starts already inside your project folder, so every command in this cookbook runs there &mdash; no separate terminal needed. If VS Code asks <em>&ldquo;Do you trust the authors of this folder?&rdquo;</em>, click <strong>Yes, I trust the authors</strong>.
+        </div>
+
+        <h2 id="pre-ext" class="reveal">Install the VS Code Extensions</h2>
+        <div class="exercise-card reveal">
+            <ul>
+                <li>Click the <strong>Extensions</strong> icon in the left bar (four squares), or press <code>Ctrl+Shift+X</code> (macOS: <code>Cmd+Shift+X</code>).</li>
+                <li>Search <strong>Python</strong> and install the one published by <strong>Microsoft</strong>. It also installs <strong>Pylance</strong> and <strong>Python Debugger</strong> automatically.</li>
+                <li>Optional: search <strong>Pylance</strong> and <strong>Code Runner</strong> if they are not already there &mdash; handy for the run button.</li>
+                <li>Reload VS Code if it asks you to.</li>
+            </ul>
+        </div>
+
+        <div class="callout callout-note reveal">
+            <strong>Run Python scripts without typing</strong>
+            Open any <code>.py</code> file and click the <strong>&#9654; Run Python File</strong> button at the top right. The output appears in the VS Code terminal.
         </div>
 
         <h2 id="pre-install" class="reveal">Step 1 — Check &amp; Install Python 3.10</h2>
         <div class="exercise-card reveal">
             <h3>See what you already have</h3>
-            <p style="text-align:left;">Open a terminal (PowerShell on Windows) and run:</p>
+            <p style="text-align:left;">Open the <strong>VS Code terminal</strong> (<code>Ctrl+`</code>) and run:</p>
         </div>
         <pre class="reveal has-lang"><span class="pre-lang">powershell</span><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>python --version
 py -0</code></pre>
 
-        <p class="reveal">If you see <code>Python 3.10.x</code>, skip to Step 3. <code>py -0</code> lists every version installed side by side on Windows. If Python is missing, or you only have another version, install 3.10.</p>
+        <p class="reveal">The VS Code terminal on Windows is PowerShell by default, so these commands work as shown. If you see <code>Python 3.10.x</code>, skip to Step 3. <code>py -0</code> lists every version installed side by side on Windows. If Python is missing, or you only have another version, install 3.10.</p>
 
         <div class="exercise-card reveal">
             <h3>Install Python 3.10</h3>
@@ -590,17 +682,17 @@ sudo apt install python3.10 python3.10-venv</code></pre>
 py -3.10 --version</code></pre>
 
         <h2 id="pre-pip" class="reveal">Step 3 — Install pymavlink and pygame (One at a Time)</h2>
-        <p class="reveal">Run these in the terminal that shows Python 3.10. Using <code>python -m pip</code> guarantees the library lands in the interpreter you selected. On Windows without the interpreter selected, use <code>py -3.10 -m pip</code> instead.</p>
+        <p class="reveal">Run these in the VS Code terminal (<code>Ctrl+`</code>) that shows Python 3.10. Using <code>python -m pip</code> guarantees the library lands in the interpreter you selected. On Windows without the interpreter selected, use <code>py -3.10 -m pip</code> instead.</p>
 
         <div class="exercise-card reveal">
             <h3>1. pymavlink &mdash; talks MAVLink to the drone</h3>
         </div>
-        <pre class="reveal has-lang"><span class="pre-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>pip install "pymavlink>=2.4.40"</code></pre>
+        <pre class="reveal has-lang"><span class="pre-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>python -m pip install "pymavlink>=2.4.40"</code></pre>
 
         <div class="exercise-card reveal">
             <h3>2. pygame &mdash; keyboard / display support</h3>
         </div>
-        <pre class="reveal has-lang"><span class="pre-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>pip install "pygame>=2.5.0"</code></pre>
+        <pre class="reveal has-lang"><span class="pre-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>python -m pip install "pygame>=2.5.0"</code></pre>
 
         <div class="exercise-card reveal">
             <h3>3. Verify both import</h3>
@@ -609,7 +701,7 @@ py -3.10 --version</code></pre>
 
         <div class="checkpoint reveal">
             <strong class="tag">&#9989; Checkpoint</strong>
-            <p style="text-align:left; margin-bottom:0;"><code>python --version</code> prints 3.10.x and the verify line prints <code>pymavlink + pygame OK</code>. Mission Planner is installed.</p>
+            <p style="text-align:left; margin-bottom:0;"><code>python --version</code> prints 3.10.x and the verify line prints <code>pymavlink + pygame OK</code>. Mission Planner is installed, and VS Code opens your folder with <code>code .</code>.</p>
         </div>
 
         <div class="callout callout-danger reveal">
@@ -766,6 +858,13 @@ py -3.10 --version</code></pre>
                 <li><code>mavutil.mavlink_connection("tcp:127.0.0.1:5762")</code> opens the link to SITL.</li>
                 <li><code>master.wait_heartbeat()</code> blocks until the first heartbeat arrives and records the vehicle's <code>target_system</code> / <code>target_component</code> — the address every later command is sent to.</li>
             </ul>
+            <h3>Open it in VS Code</h3>
+            <ul>
+                <li>Make sure VS Code is open on your workshop folder. If not, open a terminal, run <code>cd $HOME\Desktop\agri-drone-workshop</code> (macOS / Linux: <code>cd ~/Desktop/agri-drone-workshop</code>) and then <code>code .</code></li>
+                <li>In the <strong>Explorer</strong> panel on the left, click the <strong>New File</strong> icon (or press <code>Ctrl+N</code>, then <code>Ctrl+S</code>) and name it <code>heartbeat.py</code>.</li>
+                <li>Copy the <strong>Full Code</strong> shown below with the Copy button, paste it into <code>heartbeat.py</code> and save with <code>Ctrl+S</code>.</li>
+                <li>Check the bottom-right status bar shows <strong>Python 3.10</strong>. If not, press <code>Ctrl+Shift+P</code> &rarr; <em>Python: Select Interpreter</em> (see <a href="#pre-314">Prerequisites</a>).</li>
+            </ul>
             <h3>Run it</h3>
         </div>
         <pre class="reveal has-lang"><span class="pre-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>python heartbeat.py</code></pre>
@@ -818,6 +917,11 @@ print(&quot;Component ID:&quot;, master.target_component)</code></pre>
                 <li><code>MAV_CMD_COMPONENT_ARM_DISARM</code> arms/disarms; <code>MAV_CMD_NAV_TAKEOFF</code> climbs to a target altitude; <code>MAV_CMD_NAV_LAND</code> descends.</li>
                 <li><code>wait_for_ack()</code> reads back <code>COMMAND_ACK</code> so you know whether each command was accepted or rejected.</li>
                 <li>The <code>move_*</code> / <code>yaw_*</code> helpers stream <code>SET_POSITION_TARGET_LOCAL_NED</code> velocity messages at 10&nbsp;Hz for a few seconds, then send a zero-velocity stop.</li>
+            </ul>
+            <h3>Open it in VS Code</h3>
+            <ul>
+                <li>In VS Code, create a new file <code>control.py</code> in your workshop folder (Explorer &rarr; <strong>New File</strong>), paste the <strong>Full Code</strong> below and press <code>Ctrl+S</code>.</li>
+                <li>Open the terminal inside VS Code with <code>Ctrl+`</code> &mdash; it is already in your workshop folder.</li>
             </ul>
             <h3>Run it</h3>
         </div>
@@ -1228,6 +1332,11 @@ if __name__ == &quot;__main__&quot;:
                 <li><code>upload_mission()</code> answers each <code>MISSION_REQUEST</code> with the matching <code>mission_item_int</code>, then waits for <code>MISSION_ACK</code>.</li>
                 <li><code>set_current_mission_item(master, 1)</code> makes the mission start at the TAKEOFF item, not seq 0.</li>
                 <li><code>monitor_mission()</code> prints each <code>MISSION_CURRENT</code> change and altitude until the heartbeat shows disarmed.</li>
+            </ul>
+            <h3>Open it in VS Code</h3>
+            <ul>
+                <li>In VS Code, create a new file <code>waypoint.py</code> in your workshop folder (Explorer &rarr; <strong>New File</strong>), paste the <strong>Full Code</strong> below and press <code>Ctrl+S</code>.</li>
+                <li>Open the terminal inside VS Code with <code>Ctrl+`</code> &mdash; it is already in your workshop folder.</li>
             </ul>
             <h3>Run it</h3>
         </div>
@@ -1656,6 +1765,11 @@ if __name__ == &quot;__main__&quot;:
                 <li><code>FENCE_ALT_MAX</code>, <code>FENCE_RADIUS</code>, <code>FENCE_ACTION</code> (1 = RTL) and <code>FENCE_ENABLE</code> are set with <code>set_param()</code> and read back with <code>get_param()</code>.</li>
                 <li>The demo streams a forward velocity to cross the ~60&nbsp;m radius; ArduPilot then overrides the mode and executes the fence action.</li>
                 <li><code>FENCE_STATUS</code> carries <code>breach_status</code> / <code>breach_type</code> — <code>print_fence_status()</code> watches for the breach.</li>
+            </ul>
+            <h3>Open it in VS Code</h3>
+            <ul>
+                <li>In VS Code, create a new file <code>geofence.py</code> in your workshop folder (Explorer &rarr; <strong>New File</strong>), paste the <strong>Full Code</strong> below and press <code>Ctrl+S</code>.</li>
+                <li>Open the terminal inside VS Code with <code>Ctrl+`</code> &mdash; it is already in your workshop folder.</li>
             </ul>
             <h3>Run it</h3>
         </div>
